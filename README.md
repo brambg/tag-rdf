@@ -1,1 +1,1 @@
-# ontology-extracter
+# ontology-extractor
