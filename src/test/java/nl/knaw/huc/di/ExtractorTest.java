@@ -15,18 +15,17 @@ public class ExtractorTest {
     OntologyExtractor oe = new OntologyExtractor(xml);
     String ttl = oe.toString(oe::writeAsTurtle);
     final String expected = "@prefix dct:   <http://purl.org/dc/terms/> .\n" +
+        "@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
         "@prefix tag:   <http://example.org/ns/tag#> .\n" +
         "\n" +
         "<tag:p#1>  a         tag:MarkupElement ;\n" +
         "        dct:hasPart  ( <tag:w#2> <tag:TEXT#4> <tag:w#5> ) .\n" +
         "\n" +
-        "<tag:TEXT#6>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"World\" .\n" +
+        "<tag:TEXT#6>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"World\" .\n" +
         "\n" +
-        "<tag:TEXT#4>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \" \" .\n" +
+        "<tag:TEXT#4>  a    tag:TextNode ;\n" +
+        "        rdf:value  \" \" .\n" +
         "\n" +
         "tag:Document0  a           tag:Document ;\n" +
         "        tag:hasRootMarkup  <tag:xml#0> .\n" +
@@ -40,9 +39,8 @@ public class ExtractorTest {
         "<tag:w#5>  a         tag:MarkupElement ;\n" +
         "        dct:hasPart  ( <tag:TEXT#6> ) .\n" +
         "\n" +
-        "<tag:TEXT#3>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"Hello\" .\n";
+        "<tag:TEXT#3>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"Hello\" .\n";
 
     oe.writeAsTurtle(System.out);
     oe.writeAsRDFXML(System.out);
@@ -63,19 +61,18 @@ public class ExtractorTest {
         "</data>";
     OntologyExtractor oe = new OntologyExtractor(xml);
     String ttl = oe.toString(oe::writeAsTurtle);
-    final String expected = "\"@prefix dct:   <http://purl.org/dc/terms/> .\n" +
+    final String expected = "@prefix dct:   <http://purl.org/dc/terms/> .\n" +
+        "@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
         "@prefix tag:   <http://example.org/ns/tag#> .\n" +
         "\n" +
         "tag:Document0  a           tag:Document ;\n" +
         "        tag:hasRootMarkup  <tag:data#0> .\n" +
         "\n" +
-        "<tag:TEXT#3>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"\\n        \" .\n" +
+        "<tag:TEXT#3>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"\\n        \" .\n" +
         "\n" +
-        "<tag:TEXT#9>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"\\n        \" .\n" +
+        "<tag:TEXT#9>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"\\n        \" .\n" +
         "\n" +
         "<tag:name#4>  a      tag:MarkupElement ;\n" +
         "        dct:hasPart  ( <tag:TEXT#5> ) .\n" +
@@ -89,37 +86,30 @@ public class ExtractorTest {
         "<tag:data#0>  a      tag:MarkupElement ;\n" +
         "        dct:hasPart  ( <tag:TEXT#1> <tag:item#2> <tag:TEXT#7> <tag:item#8> <tag:TEXT#13> ) .\n" +
         "\n" +
-        "<tag:TEXT#1>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"\\n    \" .\n" +
+        "<tag:TEXT#1>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"\\n    \" .\n" +
         "\n" +
-        "<tag:TEXT#7>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"\\n    \" .\n" +
+        "<tag:TEXT#7>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"\\n    \" .\n" +
         "\n" +
-        "<tag:TEXT#6>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"\\n    \" .\n" +
+        "<tag:TEXT#6>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"\\n    \" .\n" +
         "\n" +
-        "<tag:TEXT#13>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"\\n\" .\n" +
+        "<tag:TEXT#13>  a   tag:TextNode ;\n" +
+        "        rdf:value  \"\\n\" .\n" +
         "\n" +
-        "<tag:TEXT#5>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"Hello\" .\n" +
+        "<tag:TEXT#5>  a    tag:TextNode ;\n" +
+        "        rdf:value  \"Hello\" .\n" +
         "\n" +
         "<tag:name#10>  a     tag:MarkupElement ;\n" +
         "        dct:hasPart  ( <tag:TEXT#11> ) .\n" +
         "\n" +
-        "<tag:TEXT#12>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"\\n    \" .\n" +
+        "<tag:TEXT#12>  a   tag:TextNode ;\n" +
+        "        rdf:value  \"\\n    \" .\n" +
         "\n" +
-        "<tag:TEXT#11>  a  tag:TextNode ;\n" +
-        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
-        "                \"Hello\" .\n" +
-        "\"";
+
+        "<tag:TEXT#11>  a   tag:TextNode ;\n" +
+        "        rdf:value  \"Hello\" .\n";
 
     assertThat(ttl).isEqualTo(expected);
     oe.writeAsRDFXML(System.out);

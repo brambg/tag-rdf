@@ -25,6 +25,7 @@ class OntologyExtractor {
     try {
       Document xmlDoc = parse(xml);
       model = ModelFactory.createDefaultModel()
+          .setNsPrefix("rdf", RDF.getURI())
           .setNsPrefix("tag", TAG.NS)
           .setNsPrefix("dct", DCTerms.NS);
       Element root = xmlDoc.getDocumentElement();
