@@ -3,29 +3,34 @@ package nl.knaw.huc.di;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.Seq;
-import org.apache.jena.rdf.model.impl.SeqImpl;
 import org.apache.jena.vocabulary.DCTerms;
 import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExtractorTest {
-
   @Test
   public void test() {
     String xml = "<xml><p><w>Hello</w> <w>World</w></p></xml>";
     OntologyExtractor oe = new OntologyExtractor(xml);
-    assertThat(oe).isNotNull();
-
+    String ttl = oe.toString(oe::writeAsTurtle);
+    final String expected = "<http://example.org/w/w2>\n" +
+        "        <http://purl.org/dc/terms/hasPart>\n" +
+        "                ( \"Hello\" ) .\n" +
+        "\n" +
+        "<http://example.org/xml/xml0>\n" +
+        "        <http://purl.org/dc/terms/hasPart>\n" +
+        "                ( <http://example.org/p/p1> ) .\n" +
+        "\n" +
+        "<http://example.org/w/w3>\n" +
+        "        <http://purl.org/dc/terms/hasPart>\n" +
+        "                ( \"World\" ) .\n" +
+        "\n" +
+        "<http://example.org/p/p1>\n" +
+        "        <http://purl.org/dc/terms/hasPart>\n" +
+        "                ( <http://example.org/w/w2> \" \" <http://example.org/w/w3> ) .\n";
+    System.out.println(ttl);
+    assertThat(ttl).isEqualTo(expected);
   }
 
   @Test
@@ -53,7 +58,6 @@ public class ExtractorTest {
     model.write(System.out, "RDF/XML-ABBREV");
     System.out.println();
 
-
     // now write the model in N-TRIPLES form to a file
     System.out.println("N-TRIPLES");
     model.write(System.out, "N-TRIPLES");
@@ -69,52 +73,5 @@ public class ExtractorTest {
     model.write(System.out, "JSONLD");
     System.out.println();
   }
-
-  @Test
-  public void testDOM() throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    StringBuilder xmlStringBuilder = new StringBuilder();
-    xmlStringBuilder.append("<xml><p><w>Hello</w> <w>World</w></p></xml>");
-    ByteArrayInputStream input = new ByteArrayInputStream(xmlStringBuilder.toString().getBytes("UTF-8"));
-    Document document = builder.parse(input);
-
-    Model model = ModelFactory.createDefaultModel();
-    Element root = document.getDocumentElement();
-    buildModel(model, root);
-
-    model.write(System.out, "TURTLE");
-  }
-
-  private Resource buildModel(Model model, Element element) {
-    Resource resource = model.createResource(resourceURI(element));
-    NodeList childNodes = element.getChildNodes();
-    int childlength = childNodes.getLength();
-    for (int i = 0; i < childlength; i++) {
-      Resource child = toResource(model, childNodes.item(i));
-      if (child != null) {
-        resource.addProperty(DCTerms.hasPart, child);
-      }
-      Seq seq = new SeqImpl();
-    }
-    return resource;
-  }
-
-  private Resource toResource(Model model, Node node) {
-    if (node.getNodeType() == Node.ELEMENT_NODE) {
-      Element element = (Element) node;
-      String uri = resourceURI(element);
-      Resource resource = buildModel(model, element);
-      return resource;
-
-    }
-
-    return null;
-  }
-
-  private String resourceURI(Element element) {
-    return "http://example.org/" + element.getTagName();
-  }
-
 
 }
