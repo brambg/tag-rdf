@@ -3,6 +3,7 @@ package nl.knaw.huc.di;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.sparql.vocabulary.FOAF;
 import org.apache.jena.vocabulary.DCTerms;
 import org.junit.Test;
 
@@ -14,23 +15,71 @@ public class ExtractorTest {
     String xml = "<xml><p><w>Hello</w> <w>World</w></p></xml>";
     OntologyExtractor oe = new OntologyExtractor(xml);
     String ttl = oe.toString(oe::writeAsTurtle);
-    final String expected = "<http://example.org/w/w2>\n" +
-        "        <http://purl.org/dc/terms/hasPart>\n" +
-        "                ( \"Hello\" ) .\n" +
+    final String expected = "@prefix dct:   <http://purl.org/dc/terms/> .\n" +
+        "@prefix tag:   <http://example.org/ns/tag#> .\n" +
         "\n" +
-        "<http://example.org/xml/xml0>\n" +
-        "        <http://purl.org/dc/terms/hasPart>\n" +
-        "                ( <http://example.org/p/p1> ) .\n" +
+        "<tag:p#1>  a         tag:MarkupElement ;\n" +
+        "        dct:hasPart  ( <tag:w#2> <tag:TEXT#4> <tag:w#5> ) .\n" +
         "\n" +
-        "<http://example.org/w/w3>\n" +
-        "        <http://purl.org/dc/terms/hasPart>\n" +
-        "                ( \"World\" ) .\n" +
+        "<tag:TEXT#6>  a  tag:TextNode ;\n" +
+        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
+        "                \"World\" .\n" +
         "\n" +
-        "<http://example.org/p/p1>\n" +
-        "        <http://purl.org/dc/terms/hasPart>\n" +
-        "                ( <http://example.org/w/w2> \" \" <http://example.org/w/w3> ) .\n";
-    System.out.println(ttl);
+        "<tag:TEXT#4>  a  tag:TextNode ;\n" +
+        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
+        "                \" \" .\n" +
+        "\n" +
+        "tag:Document0  a           tag:Document ;\n" +
+        "        tag:hasRootMarkup  <tag:xml#0> .\n" +
+        "\n" +
+        "<tag:xml#0>  a       tag:MarkupElement ;\n" +
+        "        dct:hasPart  ( <tag:p#1> ) .\n" +
+        "\n" +
+        "<tag:w#2>  a         tag:MarkupElement ;\n" +
+        "        dct:hasPart  ( <tag:TEXT#3> ) .\n" +
+        "\n" +
+        "<tag:w#5>  a         tag:MarkupElement ;\n" +
+        "        dct:hasPart  ( <tag:TEXT#6> ) .\n" +
+        "\n" +
+        "<tag:TEXT#3>  a  tag:TextNode ;\n" +
+        "        <http://www.w3.org/1999/02/22-rdf-syntax-ns#value>\n" +
+        "                \"Hello\" .\n";
+
+    oe.writeAsTurtle(System.out);
+    oe.writeAsRDFXML(System.out);
+    oe.writeAsJSONLD(System.out);
+    oe.writeAsTriples(System.out);
     assertThat(ttl).isEqualTo(expected);
+  }
+
+  @Test
+  public void test2() {
+    String xml = "<data xmlns=\"http://example.org\">\n" +
+        "    <item>\n" +
+        "        <name>Hello</name>\n" +
+        "    </item>\n" +
+        "    <item>\n" +
+        "        <name>Hello</name>\n" +
+        "    </item>\n" +
+        "</data>";
+    OntologyExtractor oe = new OntologyExtractor(xml);
+    String ttl = oe.toString(oe::writeAsTurtle);
+    final String expected = "@prefix :      <http://example.org#> .\n" +
+        "@prefix xmlToRdf: <http://acandonorway.github.com/XmlToRdf/ontology.ttl#> .\n" +
+        "\n" +
+        "[ a                  :data ;\n" +
+        "  xmlToRdf:hasChild  [ a       :item ;\n" +
+        "                       :name   \"Hello\"\n" +
+        "                     ] ;\n" +
+        "  xmlToRdf:hasChild  [ a       :item ;\n" +
+        "                       :name   \"Hello\"\n" +
+        "                     ]\n" +
+        "] .";
+
+    assertThat(ttl).isEqualTo(expected);
+    oe.writeAsRDFXML(System.out);
+    oe.writeAsJSONLD(System.out);
+    oe.writeAsTriples(System.out);
   }
 
   @Test
@@ -72,6 +121,8 @@ public class ExtractorTest {
     System.out.println("JSON-LD");
     model.write(System.out, "JSONLD");
     System.out.println();
+
+
   }
 
 }

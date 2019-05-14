@@ -2,6 +2,7 @@ package nl.knaw.huc.di;
 
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.DCTerms;
+import org.apache.jena.vocabulary.RDF;
 import org.w3c.dom.CharacterData;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -22,10 +23,16 @@ class OntologyExtractor {
 
   public OntologyExtractor(String xml) {
     try {
-      Document document = parse(xml);
-      model = ModelFactory.createDefaultModel();
-      Element root = document.getDocumentElement();
-      buildModel(model, root);
+      Document xmlDoc = parse(xml);
+      model = ModelFactory.createDefaultModel()
+          .setNsPrefix("tag", TAG.NS)
+          .setNsPrefix("dct", DCTerms.NS);
+      Element root = xmlDoc.getDocumentElement();
+      RDFNode rootNode = buildModel(model, root);
+
+      model.createResource(TAG.Document.getURI() + "0")
+          .addProperty(TAG.hasRootMarkup, rootNode)
+          .addProperty(RDF.type, TAG.Document);
 
     } catch (ParserConfigurationException | IOException | SAXException e) {
       e.printStackTrace();
@@ -69,6 +76,7 @@ class OntologyExtractor {
 
   private RDFNode buildModel(Model model, Element element) {
     Resource resource = model.createResource(resourceURI(element));
+    resource.addProperty(RDF.type, TAG.MarkupElement);
     NodeList childNodes = element.getChildNodes();
     int childlength = childNodes.getLength();
     List<RDFNode> nodes = new ArrayList<>();
@@ -89,16 +97,25 @@ class OntologyExtractor {
     if (node.getNodeType() == Node.ELEMENT_NODE) {
       Element element = (Element) node;
       return buildModel(model, element);
+
     } else if (node.getNodeType() == Node.TEXT_NODE) {
+      Resource textResource = model.createResource(textResourceURI());
+      textResource.addProperty(RDF.type, TAG.TextNode);
       CharacterData cd = (CharacterData) node;
-      return model.createLiteral(cd.getData());
+      Literal content = model.createLiteral(cd.getData());
+      textResource.addProperty(RDF.value, content);
+      return textResource;
     }
 
     return null;
   }
 
+  private String textResourceURI() {
+    return String.format("tag:TEXT#%s", resourceCounter.getAndIncrement());
+  }
+
   private String resourceURI(Element element) {
-    return String.format("http://example.org/%s/%s%s", element.getTagName(), element.getTagName(), resourceCounter.getAndIncrement());
+    return String.format("tag:%s#%s", element.getTagName(), resourceCounter.getAndIncrement());
   }
 
 }
