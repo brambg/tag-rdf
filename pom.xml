@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>nl.knaw.huc.di</groupId>
-  <artifactId>ontology-extractor</artifactId>
+  <artifactId>tag-rdf</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>ontology-extractor</name>
+  <name>TAG RDF tools</name>
   <inceptionYear>2017</inceptionYear>
 
   <properties>

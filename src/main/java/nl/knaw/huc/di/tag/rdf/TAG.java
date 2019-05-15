@@ -1,19 +1,22 @@
-package nl.knaw.huc.di;
+package nl.knaw.huc.di.tag.rdf;
 
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
-public class TAG {
-  public static final String NS = "http://example.org/ns/tag#";
+class TAG {
+  public static final String NS = "https://github.com/brambg/tag-rdf/tag.ttl#";
+
   public static final Resource Document = resource("Document");
   public static final Resource MarkupElement = resource("MarkupElement");
   public static final Resource TextNode = resource("TextNode");
+
   public static final Property hasText = property("hasText");
   public static final Property hasElements = property("hasElements");
   public static final Property hasRootMarkup = property("hasRootMarkup");
 
   private TAG() {
+    throw new UnsupportedOperationException();
   }
 
   public static String getURI() {

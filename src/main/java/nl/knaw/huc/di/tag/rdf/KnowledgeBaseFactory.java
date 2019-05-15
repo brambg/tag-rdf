@@ -1,4 +1,4 @@
-package nl.knaw.huc.di;
+package nl.knaw.huc.di.tag.rdf;
 
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.RDF;
