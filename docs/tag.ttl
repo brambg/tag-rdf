@@ -1,5 +1,5 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix tag: <https://brambg.github.com//tag-rdf/tag.ttl#> .
+@prefix tag: <https://brambg.github.io/tag-rdf/tag.ttl#> .
 
 tag:Document a rdf:Resource
 tag:MarkupElement a rdf:Resource

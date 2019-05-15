@@ -5,7 +5,7 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
 class TAG {
-  public static final String NS = "https://brambg.github.com//tag-rdf/tag.ttl#";
+  public static final String NS = "https://brambg.github.io/tag-rdf/tag.ttl#";
 
   public static final Resource Document = resource("Document");
   public static final Resource MarkupElement = resource("MarkupElement");
