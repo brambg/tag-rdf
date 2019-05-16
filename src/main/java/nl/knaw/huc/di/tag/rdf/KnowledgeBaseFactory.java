@@ -12,6 +12,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.String.format;
@@ -56,18 +58,19 @@ class KnowledgeBaseFactory {
 
     NodeList childNodes = element.getChildNodes();
     int childLength = childNodes.getLength();
-    final Seq seq = model.createSeq();
+    List<RDFNode> nodes = new ArrayList<>();
     for (int i = 0; i < childLength; i++) {
       RDFNode childNode = toRDFNode(model, childNodes.item(i));
       if (childNode != null && childNode.isResource()) {
-        seq.add(childNode.asResource());
+        nodes.add(childNode.asResource());
       } else if (childNode != null && childNode.isLiteral()) {
-        seq.add(childNode.asLiteral());
+        nodes.add(childNode.asLiteral());
       } else {
         System.out.println(childNode);
       }
     }
-    resource.addProperty(TAG.hasElements, seq);
+    RDFList list = model.createList(nodes.iterator());
+    resource.addProperty(TAG.hasElements, list);
 
     NamedNodeMap attributes = element.getAttributes();
     int attributesLength = attributes.getLength();

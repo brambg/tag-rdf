@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.function.Consumer;
 
 public class KnowledgeBase {
-  private final Model model;
+  final Model model;
 
   KnowledgeBase(Model model) {
     this.model = model;

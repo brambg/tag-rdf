@@ -6,8 +6,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.DCTerms;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class KnowledgeBaseTest {
   @Test
   public void test() {
@@ -57,6 +55,7 @@ public class KnowledgeBaseTest {
 
     kb.writeAsTurtle(System.out);
     kb.writeAsRDFXML(System.out);
+    System.out.println(DotFactory.fromKnowledgeBase(kb));
 //    kb.writeAsJSONLD(System.out);
 //    kb.writeAsTriples(System.out);
 //    assertThat(ttl).isEqualTo(expected);
@@ -142,6 +141,7 @@ public class KnowledgeBaseTest {
         "        rdf:value  \"Hello\" .\n";
 
 //    assertThat(ttl).isEqualTo(expected);
+    System.out.println(DotFactory.fromKnowledgeBase(kb));
     kb.writeAsRDFXML(System.out);
     kb.writeAsJSONLD(System.out);
     kb.writeAsTriples(System.out);
