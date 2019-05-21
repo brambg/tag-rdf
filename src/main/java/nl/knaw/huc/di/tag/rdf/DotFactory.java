@@ -10,47 +10,62 @@ public class DotFactory {
 
   public static String fromKnowledgeBase(KnowledgeBase kb) {
     StringBuilder dotBuilder = new StringBuilder("digraph KnowledgeBase{\n")
-        .append("graph [rankdir=LR]\n") //
+        .append("//graph [rankdir=LR]\n") //
         .append("node [style=\"filled\";fillcolor=\"white\"]\n");
     StmtIterator stmtIterator = kb.model.listStatements();
     AtomicInteger nodeCounter = new AtomicInteger();
     AtomicInteger edgeCounter = new AtomicInteger();
-    Map<String, Integer> uri2nodenum = new HashMap<>();
+    Map<Resource, Integer> resource2nodenum = new HashMap<>();
+    Map<String, String> nsPrefixMap = kb.model.getNsPrefixMap();
     while (stmtIterator.hasNext()) {
       final Statement statement = stmtIterator.nextStatement();
       System.out.println(statement);
       Resource resource = statement.getSubject();
-      String uri = resource.getURI();
-      int objectNum = 0;
-      if (uri2nodenum.containsKey(uri)) {
-        objectNum = uri2nodenum.get(uri);
-      } else {
-        objectNum = nodeCounter.getAndIncrement();
-        dotBuilder.append("node").append(objectNum).append(" [label=\"" + uri + "\"]\n");
-        uri2nodenum.put(uri,objectNum);
-      }
+      int objectNum = processResource(dotBuilder, nodeCounter, resource2nodenum, nsPrefixMap, resource);
 
       RDFNode object = statement.getObject();
       int subjectNum = 0;
       if (object.isLiteral()) {
         subjectNum = nodeCounter.getAndIncrement();
-        dotBuilder.append("node").append(subjectNum).append(" [label=\"" + object.asLiteral().getString() + "\"]\n");
+        dotBuilder.append("node").append(subjectNum).append(" [shape=box;color=green;label=\"" + object.asLiteral().getString() + "\"]\n");
       } else if (object.isResource()) {
-        uri = object.asResource().getURI();
-        if (uri2nodenum.containsKey(uri)) {
-          subjectNum = uri2nodenum.get(uri);
-        } else {
-          subjectNum = nodeCounter.getAndIncrement();
-          dotBuilder.append("node").append(subjectNum).append(" [label=\"" + uri + "\"]\n");
-          uri2nodenum.put(uri,subjectNum);
-        }
+        resource = object.asResource();
+        subjectNum = processResource(dotBuilder, nodeCounter, resource2nodenum, nsPrefixMap, resource);
       }
 
       Property predicate = statement.getPredicate();
       int edgeNum = edgeCounter.getAndIncrement();
-      dotBuilder.append("node").append(objectNum).append("->").append("node").append(subjectNum).append(" [label=\"").append(predicate.getNameSpace()).append(predicate.getLocalName()).append("\"]\n");
+      String label = compactURI(predicate.getURI(), nsPrefixMap);
+      dotBuilder.append("node").append(objectNum).append("->").append("node").append(subjectNum).append(" [label=\"").append(label).append("\"]\n");
     }
     dotBuilder.append("}");
     return dotBuilder.toString();
+  }
+
+  private static int processResource(final StringBuilder dotBuilder, final AtomicInteger nodeCounter, final Map<Resource, Integer> resource2nodenum, final Map<String, String> nsPrefixMap, final Resource resource) {
+    final int subjectNum;
+    if (resource2nodenum.containsKey(resource)) {
+      subjectNum = resource2nodenum.get(resource);
+    } else {
+      subjectNum = nodeCounter.getAndIncrement();
+      String label = label(resource, nsPrefixMap);
+      dotBuilder.append("node").append(subjectNum).append(" [label=\"" + label + "\"]\n");
+      resource2nodenum.put(resource, subjectNum);
+    }
+    return subjectNum;
+  }
+
+  private static String label(final Resource resource, final Map<String, String> nsPrefixMap) {
+    return resource.isAnon() ? "_" + resource.getId().toString() : compactURI(resource.getURI(), nsPrefixMap);
+  }
+
+  private static String compactURI(final String uri, final Map<String, String> nsPrefixMap) {
+    for (String ns : nsPrefixMap.keySet()) {
+      String prefix = nsPrefixMap.get(ns);
+      if (uri.startsWith(prefix)) {
+        return uri.replace(prefix, ns + ":");
+      }
+    }
+    return uri;
   }
 }

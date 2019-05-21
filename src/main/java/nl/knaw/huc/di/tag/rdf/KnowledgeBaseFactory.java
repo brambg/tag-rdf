@@ -69,8 +69,10 @@ class KnowledgeBaseFactory {
         System.out.println(childNode);
       }
     }
-    RDFList list = model.createList(nodes.iterator());
-    resource.addProperty(TAG.hasElements, list);
+    if (!nodes.isEmpty()) {
+      RDFList list = model.createList(nodes.iterator());
+      resource.addProperty(TAG.hasElements, list);
+    }
 
     NamedNodeMap attributes = element.getAttributes();
     int attributesLength = attributes.getLength();

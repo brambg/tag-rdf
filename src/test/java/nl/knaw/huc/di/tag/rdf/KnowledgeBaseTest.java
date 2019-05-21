@@ -1,10 +1,16 @@
 package nl.knaw.huc.di.tag.rdf;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.DCTerms;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.Charset;
 
 public class KnowledgeBaseTest {
   @Test
@@ -56,6 +62,7 @@ public class KnowledgeBaseTest {
     kb.writeAsTurtle(System.out);
     kb.writeAsRDFXML(System.out);
     System.out.println(DotFactory.fromKnowledgeBase(kb));
+    System.out.println(xml);
 //    kb.writeAsJSONLD(System.out);
 //    kb.writeAsTriples(System.out);
 //    assertThat(ttl).isEqualTo(expected);
@@ -186,6 +193,14 @@ public class KnowledgeBaseTest {
     System.out.println("JSON-LD");
     model.write(System.out, "JSONLD");
     System.out.println();
+  }
+
+  @Test
+  public void testBigXML() throws IOException {
+    String xml = FileUtils.readFileToString(new File("data/deys001hgmp09_01.xml"), Charset.defaultCharset());
+    KnowledgeBase kb = KnowledgeBaseFactory.fromXML(xml);
+    final PrintStream output = new PrintStream(new File("out.jsonld"));
+    kb.writeAsJSONLD(output);
   }
 
 }
