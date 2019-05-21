@@ -19,7 +19,7 @@ public class DotFactory {
     Map<String, String> nsPrefixMap = kb.model.getNsPrefixMap();
     while (stmtIterator.hasNext()) {
       final Statement statement = stmtIterator.nextStatement();
-      System.out.println(statement);
+//      System.out.println(statement);
       Resource resource = statement.getSubject();
       int objectNum = processResource(dotBuilder, nodeCounter, resource2nodenum, nsPrefixMap, resource);
 
@@ -27,7 +27,7 @@ public class DotFactory {
       int subjectNum = 0;
       if (object.isLiteral()) {
         subjectNum = nodeCounter.getAndIncrement();
-        dotBuilder.append("node").append(subjectNum).append(" [shape=box;color=green;label=\"" + object.asLiteral().getString() + "\"]\n");
+        dotBuilder.append("node").append(subjectNum).append(" [shape=box;color=green;label=\"").append(object.asLiteral().getString().replaceAll("\\s+"," ")).append("\"]\n");
       } else if (object.isResource()) {
         resource = object.asResource();
         subjectNum = processResource(dotBuilder, nodeCounter, resource2nodenum, nsPrefixMap, resource);
@@ -49,14 +49,14 @@ public class DotFactory {
     } else {
       subjectNum = nodeCounter.getAndIncrement();
       String label = label(resource, nsPrefixMap);
-      dotBuilder.append("node").append(subjectNum).append(" [label=\"" + label + "\"]\n");
+      dotBuilder.append("node").append(subjectNum).append(" [label=\"").append(label).append("\"]\n");
       resource2nodenum.put(resource, subjectNum);
     }
     return subjectNum;
   }
 
   private static String label(final Resource resource, final Map<String, String> nsPrefixMap) {
-    return resource.isAnon() ? "_" + resource.getId().toString() : compactURI(resource.getURI(), nsPrefixMap);
+    return resource.isAnon() ? "" : compactURI(resource.getURI(), nsPrefixMap);
   }
 
   private static String compactURI(final String uri, final Map<String, String> nsPrefixMap) {

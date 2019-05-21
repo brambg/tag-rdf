@@ -59,13 +59,31 @@ public class KnowledgeBaseTest {
         "<tag:TEXT#3>  a    tag:TextNode ;\n" +
         "        rdf:value  \"Hello\" .\n";
 
+    System.out.println("#TURTLE");
     kb.writeAsTurtle(System.out);
+    System.out.println();
+
+    System.out.println("#RDF/XML");
     kb.writeAsRDFXML(System.out);
+    System.out.println();
+
+    System.out.println("#JSON-LD");
+    kb.writeAsJSONLD(System.out);
+    System.out.println();
+
+    System.out.println("#TRIPLES");
+    kb.writeAsTriples(System.out);
+    System.out.println();
+
+    System.out.println("#DOT");
     System.out.println(DotFactory.fromKnowledgeBase(kb));
+    System.out.println();
+
+    System.out.println("#XML");
     System.out.println(xml);
-//    kb.writeAsJSONLD(System.out);
-//    kb.writeAsTriples(System.out);
-//    assertThat(ttl).isEqualTo(expected);
+    System.out.println();
+
+    //    assertThat(ttl).isEqualTo(expected);
   }
 
   @Test
@@ -150,7 +168,9 @@ public class KnowledgeBaseTest {
 //    assertThat(ttl).isEqualTo(expected);
     System.out.println(DotFactory.fromKnowledgeBase(kb));
     kb.writeAsRDFXML(System.out);
+    System.out.println();
     kb.writeAsJSONLD(System.out);
+    System.out.println();
     kb.writeAsTriples(System.out);
   }
 
@@ -199,8 +219,9 @@ public class KnowledgeBaseTest {
   public void testBigXML() throws IOException {
     String xml = FileUtils.readFileToString(new File("data/deys001hgmp09_01.xml"), Charset.defaultCharset());
     KnowledgeBase kb = KnowledgeBaseFactory.fromXML(xml);
-    final PrintStream output = new PrintStream(new File("out.jsonld"));
+    final PrintStream output = new PrintStream(new File("out/deys001hgmp09_01.jsonld"));
     kb.writeAsJSONLD(output);
+    FileUtils.writeStringToFile(new File("out/deys001hgmp09_01.dot"), DotFactory.fromKnowledgeBase(kb), Charset.defaultCharset());
   }
 
 }

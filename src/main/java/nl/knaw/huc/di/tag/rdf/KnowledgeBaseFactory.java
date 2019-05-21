@@ -19,20 +19,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static java.lang.String.format;
 
 class KnowledgeBaseFactory {
-  private static final AtomicInteger resourceCounter = new AtomicInteger();
 
   private KnowledgeBaseFactory() {
   }
 
+  private static class Context {
+    final AtomicInteger resourceCounter = new AtomicInteger();
+    Resource lastTextResource;
+  }
+
   public static KnowledgeBase fromXML(final String xml) {
     try {
-      resourceCounter.set(0);
+      Context context = new Context();
       Document xmlDoc = parse(xml);
       Model model = ModelFactory.createDefaultModel()
           .setNsPrefix("rdf", RDF.getURI())
           .setNsPrefix("tag", TAG.NS);
       Element root = xmlDoc.getDocumentElement();
-      RDFNode rootNode = buildModel(model, root);
+      RDFNode rootNode = buildModel(model, root, context);
 
       model.createResource(TAG.Document.getURI() + "0")
           .addProperty(TAG.hasRootMarkup, rootNode)
@@ -52,15 +56,16 @@ class KnowledgeBaseFactory {
     return builder.parse(input);
   }
 
-  private static RDFNode buildModel(Model model, Element element) {
-    Resource resource = model.createResource(resourceURI(element));
-    resource.addProperty(RDF.type, TAG.MarkupElement);
+  private static RDFNode buildModel(Model model, Element element, final Context context) {
+    Resource resource = model.createResource(resourceURI(element, context))
+        .addProperty(TAG.name, element.getTagName())
+        .addProperty(RDF.type, TAG.MarkupElement);
 
     NodeList childNodes = element.getChildNodes();
     int childLength = childNodes.getLength();
     List<RDFNode> nodes = new ArrayList<>();
     for (int i = 0; i < childLength; i++) {
-      RDFNode childNode = toRDFNode(model, childNodes.item(i));
+      RDFNode childNode = toRDFNode(model, childNodes.item(i), context);
       if (childNode != null && childNode.isResource()) {
         nodes.add(childNode.asResource());
       } else if (childNode != null && childNode.isLiteral()) {
@@ -76,29 +81,40 @@ class KnowledgeBaseFactory {
 
     NamedNodeMap attributes = element.getAttributes();
     int attributesLength = attributes.getLength();
+    List<Resource> attributeResources = new ArrayList<>();
     for (int i = 0; i < attributesLength; i++) {
       Node node = attributes.item(i);
       String name = node.getNodeName();
       String nodeValue = node.getNodeValue();
-      String propertyURI = annotationURI(name);
-      Property property = model.createProperty(TAG.NS, propertyURI);
-      resource.addProperty(property, nodeValue);
+      String annotationURI = annotationURI(context);
+      Property property = model.createProperty(TAG.NS, annotationURI);
+      Resource attributeResource = model.createResource(annotationURI)
+          .addProperty(TAG.name, name)
+          .addProperty(TAG.value, nodeValue);
+      attributeResources.add(attributeResource);
     }
-
+    if (!attributeResources.isEmpty()) {
+      RDFList list = model.createList(attributeResources.iterator());
+      resource.addProperty(TAG.hasAttributes, list);
+    }
     return resource;
   }
 
-  private static RDFNode toRDFNode(Model model, Node node) {
+  private static RDFNode toRDFNode(Model model, Node node, final Context context) {
     if (node.getNodeType() == Node.ELEMENT_NODE) {
       Element element = (Element) node;
-      return buildModel(model, element);
+      return buildModel(model, element, context);
 
     } else if (node.getNodeType() == Node.TEXT_NODE) {
-      Resource textResource = model.createResource(textResourceURI());
-      textResource.addProperty(RDF.type, TAG.TextNode);
+      Resource textResource = model.createResource(textResourceURI(context))
+          .addProperty(RDF.type, TAG.TextNode);
+      if (context.lastTextResource != null) {
+//        context.lastTextResource.addProperty(TAG.next, textResource);
+      }
       CharacterData cd = (CharacterData) node;
       Literal content = model.createLiteral(cd.getData());
       textResource.addProperty(RDF.value, content);
+      context.lastTextResource = textResource;
       return textResource;
     }
 
@@ -106,16 +122,16 @@ class KnowledgeBaseFactory {
     return null;
   }
 
-  private static String textResourceURI() {
-    return format("tag:TEXT#%s", resourceCounter.getAndIncrement());
+  private static String textResourceURI(final Context context) {
+    return format("tag:_text#%s", context.resourceCounter.getAndIncrement());
   }
 
-  private static String annotationURI(final String name) {
-    return format("has_%s_attribute", name);
+  private static String annotationURI(final Context context) {
+    return format("tag:_attribute#%s", context.resourceCounter.getAndIncrement());
   }
 
-  private static String resourceURI(Element element) {
-    return format("tag:%s#%s", element.getTagName(), resourceCounter.getAndIncrement());
+  private static String resourceURI(Element element, final Context context) {
+    return format("tag:%s#%s", element.getTagName(), context.resourceCounter.getAndIncrement());
   }
 
 }
