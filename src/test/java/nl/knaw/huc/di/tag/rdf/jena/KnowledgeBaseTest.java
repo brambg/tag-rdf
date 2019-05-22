@@ -1,4 +1,4 @@
-package nl.knaw.huc.di.tag.rdf;
+package nl.knaw.huc.di.tag.rdf.jena;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.rdf.model.Model;

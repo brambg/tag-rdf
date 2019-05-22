@@ -1,4 +1,4 @@
-package nl.knaw.huc.di.tag.rdf;
+package nl.knaw.huc.di.tag.rdf.rdf4j;
 
 import org.eclipse.rdf4j.model.*;
 import org.eclipse.rdf4j.model.impl.SimpleValueFactory;

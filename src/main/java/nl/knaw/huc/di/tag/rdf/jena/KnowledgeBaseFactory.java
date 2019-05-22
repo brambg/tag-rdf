@@ -1,4 +1,4 @@
-package nl.knaw.huc.di.tag.rdf;
+package nl.knaw.huc.di.tag.rdf.jena;
 
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.RDF;
@@ -109,7 +109,7 @@ class KnowledgeBaseFactory {
       Resource textResource = model.createResource(textResourceURI(context))
           .addProperty(RDF.type, TAG.TextNode);
       if (context.lastTextResource != null) {
-//        context.lastTextResource.addProperty(TAG.next, textResource);
+        context.lastTextResource.addProperty(TAG.next, textResource);
       }
       CharacterData cd = (CharacterData) node;
       Literal content = model.createLiteral(cd.getData());
