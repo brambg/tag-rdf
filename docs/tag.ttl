@@ -1,14 +1,15 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix tag: <https://brambg.github.io/tag-rdf/tag.ttl#> .
 
-tag:Document a rdf:Resource
-tag:MarkupElement a rdf:Resource
-tag:TextNode a rdf:Resource
+tag:Document a rdfs:Class .
+tag:MarkupElement a rdfs:Class .
+tag:TextNode a rdfs:Class .
 
-tag:hasAttributes a rdf:Property.
-tag:hasElements a rdf:Property.
-tag:hasText a rdf:Property.
-tag:hasRootMarkup a rdf:Property.
-tag:next a rdf:Property.
-tag:name a rdf:Property.
-tag:value a rdf:Property.
+tag:hasAttributes a rdf:Property .
+tag:hasElements a rdf:Property .
+tag:hasText a rdf:Property .
+tag:hasRootMarkup a rdf:Property .
+tag:next a rdf:Property .
+tag:name a rdf:Property .
+tag:value a rdf:Property .
+
