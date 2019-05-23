@@ -1,14 +1,17 @@
 package nl.knaw.huc.di.tag.rdf.jena;
 
 import org.apache.jena.ext.xerces.util.URI;
+import org.apache.jena.ontology.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.vocabulary.DC;
-import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 public class OntologyTest {
   @Test
@@ -93,17 +96,67 @@ public class OntologyTest {
   }
 
   @Test
-  public void testOntology() {
-    Model model = ModelFactory.createOntologyModel()
-        .setNsPrefix("dc", DC.NS)
-//        .setNsPrefix("tag", TAG.NS)
-        ;
-    Resource ontology = model.createResource(TAG.getURI())
-        .addProperty(RDF.type, OWL.Ontology)
-        .addProperty(DC.title, "The RDF Concepts Vocabulary (RDF)")
-        .addProperty(DC.description, "This is the RDF Schema for the RDF vocabulary terms in the RDF Namespace, defined in RDF 1.1 Concepts.");
+  public void testTAGMLOntology() throws FileNotFoundException {
+    OntModel model = ModelFactory.createOntologyModel(OntModelSpec.RDFS_MEM);
+    model.setNsPrefix("tag", TAG.NS);
+
+    OntClass document = model.createClass(TAG.NS + "Document");
+    addLabel(document, "Document");
+    document.addSuperClass(RDFS.Resource);
+
+    OntClass markupNode = model.createClass(TAG.NS + "MarkupNode");
+    addLabel(markupNode, "MarkupNode");
+    markupNode.addSuperClass(RDFS.Resource);
+
+    OntClass textNode = model.createClass(TAG.NS + "TextNode");
+    addLabel(textNode, "TextNode");
+    textNode.addSuperClass(RDFS.Resource);
+
+    OntClass annotationNode = model.createClass(TAG.NS + "AnnotationNode");
+    addLabel(annotationNode, "AnnotationNode");
+    annotationNode.addSuperClass(RDFS.Resource);
+
+    OntProperty root = model.createOntProperty(TAG.NS + "root");
+    addLabel(root, "root");
+    root.addDomain(document);
+    root.addRange(markupNode);
+
+    OntProperty annotation = model.createOntProperty(TAG.NS + "annotation");
+    addLabel(annotation, "annotation");
+    annotation.addDomain(markupNode);
+    annotation.addRange(annotationNode);
+
+    OntProperty elements = model.createOntProperty(TAG.NS + "elements");
+    addLabel(elements, "elements");
+    elements.addDomain(markupNode);
+    elements.addRange(markupNode);
+    elements.addRange(textNode);
+
+    OntProperty name = model.createOntProperty(TAG.NS + "name");
+    addLabel(name, "name");
+    name.addDomain(annotationNode);
+    name.addRange(RDFS.Literal);
+
+    OntProperty value = model.createOntProperty(TAG.NS + "value");
+    addLabel(value, "value");
+    value.addDomain(annotationNode);
+    value.addRange(RDFS.Literal);
+    value.addRange(RDFS.Container);
+    value.addRange(document);
+
+    OntProperty next = model.createOntProperty(TAG.NS + "next");
+    addLabel(next, "next");
+    next.addDomain(textNode);
+    next.addRange(textNode);
 
     model.write(System.out, "TURTLE");
+    model.write(new FileOutputStream(new File("out/tagml.rdf")));
+    model.write(new FileOutputStream(new File("out/tagml.jsonld")),"JSONLD");
+    model.write(new FileOutputStream(new File("out/tagml.ttl")),"TURTLE");
+  }
+
+  private void addLabel(final OntResource resource, final String label) {
+    resource.addLabel(label, "en");
   }
 
 }

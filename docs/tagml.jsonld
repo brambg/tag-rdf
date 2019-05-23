@@ -1,0 +1,111 @@
+{
+  "@graph" : [ {
+    "@id" : "tag:AnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "AnnotationNode"
+    },
+    "subClassOf" : "rdfs:Resource"
+  }, {
+    "@id" : "tag:Document",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "Document"
+    },
+    "subClassOf" : "rdfs:Resource"
+  }, {
+    "@id" : "tag:MarkupNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "MarkupNode"
+    },
+    "subClassOf" : "rdfs:Resource"
+  }, {
+    "@id" : "tag:TextNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "TextNode"
+    },
+    "subClassOf" : "rdfs:Resource"
+  }, {
+    "@id" : "tag:annotation",
+    "@type" : "rdf:Property",
+    "domain" : "tag:MarkupNode",
+    "label" : {
+      "@language" : "en",
+      "@value" : "annotation"
+    },
+    "range" : "tag:AnnotationNode"
+  }, {
+    "@id" : "tag:elements",
+    "@type" : "rdf:Property",
+    "domain" : "tag:MarkupNode",
+    "label" : {
+      "@language" : "en",
+      "@value" : "elements"
+    },
+    "range" : [ "tag:TextNode", "tag:MarkupNode" ]
+  }, {
+    "@id" : "tag:name",
+    "@type" : "rdf:Property",
+    "domain" : "tag:AnnotationNode",
+    "label" : {
+      "@language" : "en",
+      "@value" : "name"
+    },
+    "range" : "rdfs:Literal"
+  }, {
+    "@id" : "tag:next",
+    "@type" : "rdf:Property",
+    "domain" : "tag:TextNode",
+    "label" : {
+      "@language" : "en",
+      "@value" : "next"
+    },
+    "range" : "tag:TextNode"
+  }, {
+    "@id" : "tag:root",
+    "@type" : "rdf:Property",
+    "domain" : "tag:Document",
+    "label" : {
+      "@language" : "en",
+      "@value" : "root"
+    },
+    "range" : "tag:MarkupNode"
+  }, {
+    "@id" : "tag:value",
+    "@type" : "rdf:Property",
+    "domain" : "tag:AnnotationNode",
+    "label" : {
+      "@language" : "en",
+      "@value" : "value"
+    },
+    "range" : [ "tag:Document", "rdfs:Container", "rdfs:Literal" ]
+  } ],
+  "@context" : {
+    "subClassOf" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "@type" : "@id"
+    },
+    "label" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#label"
+    },
+    "range" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#range",
+      "@type" : "@id"
+    },
+    "domain" : {
+      "@id" : "http://www.w3.org/2000/01/rdf-schema#domain",
+      "@type" : "@id"
+    },
+    "owl" : "http://www.w3.org/2002/07/owl#",
+    "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "xsd" : "http://www.w3.org/2001/XMLSchema#",
+    "rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
+    "tag" : "https://brambg.github.io/tag-rdf/tag.ttl#"
+  }
+}
