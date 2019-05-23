@@ -2,37 +2,43 @@
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix tag:   <https://brambg.github.io/tag-rdf/tag.ttl#> .
+@prefix tag:   <https://brambg.github.io/tag-rdf/tagml.rdf#> .
 
-tag:Document  a          rdfs:Class ;
-        rdfs:label       "Document"@en ;
-        rdfs:subClassOf  rdfs:Resource .
-
-tag:elements  a      rdf:Property ;
-        rdfs:domain  tag:MarkupNode ;
-        rdfs:label   "elements"@en ;
-        rdfs:range   tag:TextNode , tag:MarkupNode .
-
-tag:name  a          rdf:Property ;
+tag:value  a         rdf:Property ;
         rdfs:domain  tag:AnnotationNode ;
-        rdfs:label   "name"@en ;
-        rdfs:range   rdfs:Literal .
+        rdfs:label   "value"@en ;
+        rdfs:range   tag:Document , rdfs:Container , rdfs:Literal .
 
 tag:annotation  a    rdf:Property ;
         rdfs:domain  tag:MarkupNode ;
         rdfs:label   "annotation"@en ;
         rdfs:range   tag:AnnotationNode .
 
+tag:next  a          rdf:Property ;
+        rdfs:domain  tag:TextNode ;
+        rdfs:label   "next"@en ;
+        rdfs:range   tag:TextNode .
+
+tag:elements  a      rdf:Property ;
+        rdfs:domain  tag:MarkupNode ;
+        rdfs:label   "elements"@en ;
+        rdfs:range   tag:TextNode , tag:MarkupNode .
+
 tag:TextNode  a          rdfs:Class ;
         rdfs:label       "TextNode"@en ;
         rdfs:subClassOf  rdfs:Resource .
 
-tag:MarkupNode  a        rdfs:Class ;
-        rdfs:label       "MarkupNode"@en ;
+tag:name  a          rdf:Property ;
+        rdfs:domain  tag:AnnotationNode ;
+        rdfs:label   "name"@en ;
+        rdfs:range   rdfs:Literal .
+
+tag:Document  a          rdfs:Class ;
+        rdfs:label       "Document"@en ;
         rdfs:subClassOf  rdfs:Resource .
 
-tag:AnnotationNode  a    rdfs:Class ;
-        rdfs:label       "AnnotationNode"@en ;
+tag:MarkupNode  a        rdfs:Class ;
+        rdfs:label       "MarkupNode"@en ;
         rdfs:subClassOf  rdfs:Resource .
 
 tag:root  a          rdf:Property ;
@@ -40,12 +46,6 @@ tag:root  a          rdf:Property ;
         rdfs:label   "root"@en ;
         rdfs:range   tag:MarkupNode .
 
-tag:value  a         rdf:Property ;
-        rdfs:domain  tag:AnnotationNode ;
-        rdfs:label   "value"@en ;
-        rdfs:range   tag:Document , rdfs:Container , rdfs:Literal .
-
-tag:next  a          rdf:Property ;
-        rdfs:domain  tag:TextNode ;
-        rdfs:label   "next"@en ;
-        rdfs:range   tag:TextNode .
+tag:AnnotationNode  a    rdfs:Class ;
+        rdfs:label       "AnnotationNode"@en ;
+        rdfs:subClassOf  rdfs:Resource .

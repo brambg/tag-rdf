@@ -97,54 +97,55 @@ public class OntologyTest {
 
   @Test
   public void testTAGMLOntology() throws FileNotFoundException {
+    String namespace = "https://brambg.github.io/tag-rdf/tagml.rdf#";
     OntModel model = ModelFactory.createOntologyModel(OntModelSpec.RDFS_MEM);
-    model.setNsPrefix("tag", TAG.NS);
+    model.setNsPrefix("tag", namespace);
 
-    OntClass document = model.createClass(TAG.NS + "Document");
+    OntClass document = model.createClass(namespace + "Document");
     addLabel(document, "Document");
     document.addSuperClass(RDFS.Resource);
 
-    OntClass markupNode = model.createClass(TAG.NS + "MarkupNode");
+    OntClass markupNode = model.createClass(namespace + "MarkupNode");
     addLabel(markupNode, "MarkupNode");
     markupNode.addSuperClass(RDFS.Resource);
 
-    OntClass textNode = model.createClass(TAG.NS + "TextNode");
+    OntClass textNode = model.createClass(namespace + "TextNode");
     addLabel(textNode, "TextNode");
     textNode.addSuperClass(RDFS.Resource);
 
-    OntClass annotationNode = model.createClass(TAG.NS + "AnnotationNode");
+    OntClass annotationNode = model.createClass(namespace+ "AnnotationNode");
     addLabel(annotationNode, "AnnotationNode");
     annotationNode.addSuperClass(RDFS.Resource);
 
-    OntProperty root = model.createOntProperty(TAG.NS + "root");
+    OntProperty root = model.createOntProperty(namespace + "root");
     addLabel(root, "root");
     root.addDomain(document);
     root.addRange(markupNode);
 
-    OntProperty annotation = model.createOntProperty(TAG.NS + "annotation");
+    OntProperty annotation = model.createOntProperty(namespace + "annotation");
     addLabel(annotation, "annotation");
     annotation.addDomain(markupNode);
     annotation.addRange(annotationNode);
 
-    OntProperty elements = model.createOntProperty(TAG.NS + "elements");
+    OntProperty elements = model.createOntProperty(namespace + "elements");
     addLabel(elements, "elements");
     elements.addDomain(markupNode);
     elements.addRange(markupNode);
     elements.addRange(textNode);
 
-    OntProperty name = model.createOntProperty(TAG.NS + "name");
+    OntProperty name = model.createOntProperty(namespace + "name");
     addLabel(name, "name");
     name.addDomain(annotationNode);
     name.addRange(RDFS.Literal);
 
-    OntProperty value = model.createOntProperty(TAG.NS + "value");
+    OntProperty value = model.createOntProperty(namespace + "value");
     addLabel(value, "value");
     value.addDomain(annotationNode);
     value.addRange(RDFS.Literal);
     value.addRange(RDFS.Container);
     value.addRange(document);
 
-    OntProperty next = model.createOntProperty(TAG.NS + "next");
+    OntProperty next = model.createOntProperty(namespace + "next");
     addLabel(next, "next");
     next.addDomain(textNode);
     next.addRange(textNode);
