@@ -86,9 +86,9 @@ class KnowledgeBaseFactory {
       Node node = attributes.item(i);
       String name = node.getNodeName();
       String nodeValue = node.getNodeValue();
-      String annotationURI = annotationURI(context);
-      Property property = model.createProperty(TAG.NS, annotationURI);
+      String annotationURI = attributeURI(context);
       Resource attributeResource = model.createResource(annotationURI)
+          .addProperty(RDF.type, TAG.Attribute)
           .addProperty(TAG.name, name)
           .addProperty(TAG.value, nodeValue);
       attributeResources.add(attributeResource);
@@ -126,7 +126,7 @@ class KnowledgeBaseFactory {
     return format("tag:_text#%s", context.resourceCounter.getAndIncrement());
   }
 
-  private static String annotationURI(final Context context) {
+  private static String attributeURI(final Context context) {
     return format("tag:_attribute#%s", context.resourceCounter.getAndIncrement());
   }
 

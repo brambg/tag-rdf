@@ -1,15 +1,64 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix tag: <https://brambg.github.io/tag-rdf/tag.ttl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix tag:   <https://brambg.github.io/tag-rdf/tag.ttl#> .
 
-tag:Document a rdfs:Class .
-tag:MarkupElement a rdfs:Class .
-tag:TextNode a rdfs:Class .
+tag:Document  a           rdfs:Class ;
+        rdfs:comment      "The document"@en ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "Document"@en .
 
-tag:hasAttributes a rdf:Property .
-tag:hasElements a rdf:Property .
-tag:hasText a rdf:Property .
-tag:hasRootMarkup a rdf:Property .
-tag:next a rdf:Property .
-tag:name a rdf:Property .
-tag:value a rdf:Property .
+tag:name  a               rdf:Property ;
+        rdfs:comment      "The attribute name"@en ;
+        rdfs:domain       tag:Attribute ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "name"@en ;
+        rdfs:range        rdfs:Literal .
 
+tag:TextNode  a           rdfs:Class ;
+        rdfs:comment      "The textnode"@en ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "TextNode"@en .
+
+tag:Attribute  a          rdfs:Class ;
+        rdfs:comment      "The markup attribute"@en ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "Attribute"@en .
+
+tag:MarkupElement  a      rdfs:Class ;
+        rdfs:comment      "The markup"@en ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "MarkupElement"@en .
+
+tag:hasElements  a        rdf:Property ;
+        rdfs:comment      "The (container of) elements (markup, textnode) that this markupelement encloses"@en , "The (container of) attributes of this markupelement"@en ;
+        rdfs:domain       tag:MarkupElement ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "hasElements"@en ;
+        rdfs:range        rdfs:Container .
+
+tag:hasAttributes  a      rdf:Property ;
+        rdfs:domain       tag:MarkupElement ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "hasAttributes"@en ;
+        rdfs:range        rdfs:Container .
+
+tag:hasRootMarkup  a      rdf:Property ;
+        rdfs:comment      "The root markup of this document"@en ;
+        rdfs:domain       tag:Document ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "hasRootMarkup"@en ;
+        rdfs:range        tag:MarkupElement .
+
+tag:value  a              rdf:Property ;
+        rdfs:comment      "The attribute value"@en ;
+        rdfs:domain       tag:Attribute ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "value"@en ;
+        rdfs:range        rdfs:Literal .
+
+tag:next  a               rdf:Property ;
+        rdfs:comment      "The textnode following this textnode"@en ;
+        rdfs:domain       tag:TextNode ;
+        rdfs:isDefinedBy  "https://brambg.github.io/tag-rdf/tag.ttl#" ;
+        rdfs:label        "next"@en ;
+        rdfs:range        tag:TextNode .

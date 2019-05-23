@@ -10,8 +10,8 @@ class TAG {
   public static final Resource Document = resource("Document");
   public static final Resource MarkupElement = resource("MarkupElement");
   public static final Resource TextNode = resource("TextNode");
+  public static final Resource Attribute = resource("Attribute");
 
-  public static final Property hasText = property("hasText");
   public static final Property hasAttributes = property("hasAttributes");
   public static final Property hasElements = property("hasElements");
   public static final Property hasRootMarkup = property("hasRootMarkup");
