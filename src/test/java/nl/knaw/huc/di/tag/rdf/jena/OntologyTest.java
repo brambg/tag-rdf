@@ -113,14 +113,37 @@ public class OntologyTest {
     addLabel(textNode, "TextNode");
     textNode.addSuperClass(RDFS.Resource);
 
-    OntClass annotationNode = model.createClass(namespace+ "AnnotationNode");
+    OntClass annotationNode = model.createClass(namespace + "AnnotationNode");
     addLabel(annotationNode, "AnnotationNode");
     annotationNode.addSuperClass(RDFS.Resource);
+
+    OntClass layerNode = model.createClass(namespace + "LayerNode");
+    addLabel(layerNode, "LayerNode");
+    layerNode.addSuperClass(RDFS.Resource);
+
+    OntClass elementList = model.createClass(namespace + "ElementList");
+    addLabel(elementList, "ElementList");
+    elementList.addSuperClass(RDF.List);
 
     OntProperty root = model.createOntProperty(namespace + "root");
     addLabel(root, "root");
     root.addDomain(document);
     root.addRange(markupNode);
+
+    OntProperty markupName = model.createOntProperty(namespace + "markup_name");
+    addLabel(markupName, "markup_name");
+    markupName.addDomain(markupNode);
+    markupName.addRange(RDFS.Literal);
+
+    OntProperty layer = model.createOntProperty(namespace + "layer");
+    addLabel(layer, "layer");
+    layer.addDomain(markupNode);
+    layer.addRange(layerNode);
+
+    OntProperty layerName = model.createOntProperty(namespace + "layer_name");
+    addLabel(layerName, "layer_name");
+    layerName.addDomain(layerNode);
+    layerName.addRange(RDFS.Literal);
 
     OntProperty annotation = model.createOntProperty(namespace + "annotation");
     addLabel(annotation, "annotation");
@@ -130,13 +153,14 @@ public class OntologyTest {
     OntProperty elements = model.createOntProperty(namespace + "elements");
     addLabel(elements, "elements");
     elements.addDomain(markupNode);
-    elements.addRange(markupNode);
-    elements.addRange(textNode);
+    elements.addRange(elementList);
+//    elements.addRange(markupNode);
+//    elements.addRange(textNode);
 
-    OntProperty name = model.createOntProperty(namespace + "name");
-    addLabel(name, "name");
-    name.addDomain(annotationNode);
-    name.addRange(RDFS.Literal);
+    OntProperty annotationName = model.createOntProperty(namespace + "annotation_name");
+    addLabel(annotationName, "annotation_name");
+    annotationName.addDomain(annotationNode);
+    annotationName.addRange(RDFS.Literal);
 
     OntProperty value = model.createOntProperty(namespace + "value");
     addLabel(value, "value");
@@ -145,15 +169,20 @@ public class OntologyTest {
     value.addRange(RDFS.Container);
     value.addRange(document);
 
-    OntProperty next = model.createOntProperty(namespace + "next");
-    addLabel(next, "next");
-    next.addDomain(textNode);
-    next.addRange(textNode);
+    OntProperty content = model.createOntProperty(namespace + "content");
+    addLabel(content, "content");
+    content.addDomain(textNode);
+    content.addRange(RDFS.Literal);
+
+//    OntProperty next = model.createOntProperty(namespace + "next");
+//    addLabel(next, "next");
+//    next.addDomain(textNode);
+//    next.addRange(textNode);
 
     model.write(System.out, "TURTLE");
     model.write(new FileOutputStream(new File("out/tagml.rdf")));
-    model.write(new FileOutputStream(new File("out/tagml.jsonld")),"JSONLD");
-    model.write(new FileOutputStream(new File("out/tagml.ttl")),"TURTLE");
+    model.write(new FileOutputStream(new File("out/tagml.jsonld")), "JSONLD");
+    model.write(new FileOutputStream(new File("out/tagml.ttl")), "TURTLE");
   }
 
   private void addLabel(final OntResource resource, final String label) {
