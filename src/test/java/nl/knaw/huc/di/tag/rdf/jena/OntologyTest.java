@@ -85,6 +85,7 @@ public class OntologyTest {
     addDefinedBy(model, TAG.value);
 
     model.write(System.out, "TURTLE");
+    System.out.println(DotFactory.fromModel(model));
   }
 
   private void addDefinedBy(final Model model, final Resource resource) {
@@ -100,6 +101,7 @@ public class OntologyTest {
     String namespace = "https://brambg.github.io/tag-rdf/tagml.rdf#";
     OntModel model = ModelFactory.createOntologyModel(OntModelSpec.RDFS_MEM);
     model.setNsPrefix("tag", namespace);
+
 
     OntClass document = model.createClass(namespace + "Document");
     addLabel(document, "Document");
@@ -124,6 +126,20 @@ public class OntologyTest {
     OntClass elementList = model.createClass(namespace + "ElementList");
     addLabel(elementList, "ElementList");
     elementList.addSuperClass(RDF.List);
+
+    OntClass nil = model.createClass(namespace + "nil");
+    nil.addSuperClass(elementList);
+
+    OntProperty first = model.createOntProperty(namespace + "first");
+    addLabel(first, "first");
+    first.addDomain(elementList);
+    first.addRange(markupNode);
+    first.addRange(textNode);
+
+    OntProperty rest = model.createOntProperty(namespace + "rest");
+    addLabel(rest, "rest");
+    rest.addDomain(elementList);
+    rest.addRange(elementList);
 
     OntProperty root = model.createOntProperty(namespace + "root");
     addLabel(root, "root");
@@ -179,6 +195,7 @@ public class OntologyTest {
 //    next.addDomain(textNode);
 //    next.addRange(textNode);
 
+    System.out.println(DotFactory.fromModel(model));
     model.write(System.out, "TURTLE");
     model.write(new FileOutputStream(new File("out/tagml.rdf")));
     model.write(new FileOutputStream(new File("out/tagml.jsonld")), "JSONLD");

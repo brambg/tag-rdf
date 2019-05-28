@@ -9,14 +9,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DotFactory {
 
   public static String fromKnowledgeBase(KnowledgeBase kb) {
+    return fromModel(kb.model);
+  }
+
+  public static String fromModel(Model model) {
     StringBuilder dotBuilder = new StringBuilder("digraph KnowledgeBase{\n")
         .append("//graph [rankdir=LR]\n") //
         .append("node [style=\"filled\";fillcolor=\"white\"]\n");
-    StmtIterator stmtIterator = kb.model.listStatements();
+    StmtIterator stmtIterator = model.listStatements();
     AtomicInteger nodeCounter = new AtomicInteger();
     AtomicInteger edgeCounter = new AtomicInteger();
     Map<Resource, Integer> resource2nodenum = new HashMap<>();
-    Map<String, String> nsPrefixMap = kb.model.getNsPrefixMap();
+    Map<String, String> nsPrefixMap = model.getNsPrefixMap();
     while (stmtIterator.hasNext()) {
       final Statement statement = stmtIterator.nextStatement();
 //      System.out.println(statement);
@@ -27,7 +31,7 @@ public class DotFactory {
       int subjectNum = 0;
       if (object.isLiteral()) {
         subjectNum = nodeCounter.getAndIncrement();
-        dotBuilder.append("node").append(subjectNum).append(" [shape=box;color=green;label=\"").append(object.asLiteral().getString().replaceAll("\\s+"," ")).append("\"]\n");
+        dotBuilder.append("node").append(subjectNum).append(" [shape=box;color=green;label=\"").append(object.asLiteral().getString().replaceAll("\\s+", " ")).append("\"]\n");
       } else if (object.isResource()) {
         resource = object.asResource();
         subjectNum = processResource(dotBuilder, nodeCounter, resource2nodenum, nsPrefixMap, resource);
@@ -68,4 +72,5 @@ public class DotFactory {
     }
     return uri;
   }
+
 }
