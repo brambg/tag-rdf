@@ -26,16 +26,19 @@ tag:MarkupNode  a   rdfs:Class ;
         rdfs:label  "MarkupNode"@en .
 
 tag:RichTextAnnotationNode
-        a           rdfs:Class ;
-        rdfs:label  "RichTextAnnotationNode"@en .
+        a                rdfs:Class ;
+        rdfs:label       "RichTextAnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode .
 
 tag:ListAnnotationNode
-        a           rdfs:Class ;
-        rdfs:label  "ListAnnotationNode"@en .
+        a                rdfs:Class ;
+        rdfs:label       "ListAnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode .
 
 tag:StringAnnotationNode
-        a           rdfs:Class ;
-        rdfs:label  "StringAnnotationNode"@en .
+        a                rdfs:Class ;
+        rdfs:label       "StringAnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode .
 
 tag:content  a       rdf:Property ;
         rdfs:domain  tag:TextNode ;
@@ -62,8 +65,9 @@ tag:annotation_name  a  rdf:Property ;
         rdfs:range   rdfs:Literal .
 
 tag:ReferenceAnnotationNode
-        a           rdfs:Class ;
-        rdfs:label  "ReferenceAnnotationNode"@en .
+        a                rdfs:Class ;
+        rdfs:label       "ReferenceAnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode .
 
 tag:layer  a         rdf:Property ;
         rdfs:domain  tag:MarkupNode ;
@@ -72,14 +76,15 @@ tag:layer  a         rdf:Property ;
 
 tag:AnnotationNode  a    rdfs:Class ;
         rdfs:label       "AnnotationNode"@en ;
-        rdfs:subClassOf  tag:AnnotationNode , rdfs:Resource .
+        rdfs:subClassOf  rdfs:Resource .
 
 tag:nil  a               rdfs:Class ;
         rdfs:subClassOf  tag:ElementList .
 
 tag:BooleanAnnotationNode
-        a           rdfs:Class ;
-        rdfs:label  "BooleanAnnotationNode"@en .
+        a                rdfs:Class ;
+        rdfs:label       "BooleanAnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode .
 
 tag:layer_name  a    rdf:Property ;
         rdfs:domain  tag:LayerNode ;
@@ -91,8 +96,9 @@ tag:LayerNode  a         rdfs:Class ;
         rdfs:subClassOf  rdfs:Resource .
 
 tag:NumberAnnotationNode
-        a           rdfs:Class ;
-        rdfs:label  "NumberAnnotationNode"@en .
+        a                rdfs:Class ;
+        rdfs:label       "NumberAnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode .
 
 tag:rest  a          rdf:Property ;
         rdfs:domain  tag:ElementList ;
@@ -105,8 +111,9 @@ tag:markup_name  a   rdf:Property ;
         rdfs:range   rdfs:Literal .
 
 tag:MapAnnotationNode
-        a           rdfs:Class ;
-        rdfs:label  "MapAnnotationNode"@en .
+        a                rdfs:Class ;
+        rdfs:label       "MapAnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode .
 
 tag:root  a          rdf:Property ;
         rdfs:domain  tag:Document ;

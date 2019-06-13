@@ -6,14 +6,15 @@
       "@language" : "en",
       "@value" : "AnnotationNode"
     },
-    "subClassOf" : [ "tag:AnnotationNode", "rdfs:Resource" ]
+    "subClassOf" : "rdfs:Resource"
   }, {
     "@id" : "tag:BooleanAnnotationNode",
     "@type" : "rdfs:Class",
     "label" : {
       "@language" : "en",
       "@value" : "BooleanAnnotationNode"
-    }
+    },
+    "subClassOf" : "tag:AnnotationNode"
   }, {
     "@id" : "tag:Document",
     "@type" : "rdfs:Class",
@@ -44,14 +45,16 @@
     "label" : {
       "@language" : "en",
       "@value" : "ListAnnotationNode"
-    }
+    },
+    "subClassOf" : "tag:AnnotationNode"
   }, {
     "@id" : "tag:MapAnnotationNode",
     "@type" : "rdfs:Class",
     "label" : {
       "@language" : "en",
       "@value" : "MapAnnotationNode"
-    }
+    },
+    "subClassOf" : "tag:AnnotationNode"
   }, {
     "@id" : "tag:MarkupNode",
     "@type" : "rdfs:Class",
@@ -65,28 +68,32 @@
     "label" : {
       "@language" : "en",
       "@value" : "NumberAnnotationNode"
-    }
+    },
+    "subClassOf" : "tag:AnnotationNode"
   }, {
     "@id" : "tag:ReferenceAnnotationNode",
     "@type" : "rdfs:Class",
     "label" : {
       "@language" : "en",
       "@value" : "ReferenceAnnotationNode"
-    }
+    },
+    "subClassOf" : "tag:AnnotationNode"
   }, {
     "@id" : "tag:RichTextAnnotationNode",
     "@type" : "rdfs:Class",
     "label" : {
       "@language" : "en",
       "@value" : "RichTextAnnotationNode"
-    }
+    },
+    "subClassOf" : "tag:AnnotationNode"
   }, {
     "@id" : "tag:StringAnnotationNode",
     "@type" : "rdfs:Class",
     "label" : {
       "@language" : "en",
       "@value" : "StringAnnotationNode"
-    }
+    },
+    "subClassOf" : "tag:AnnotationNode"
   }, {
     "@id" : "tag:TextNode",
     "@type" : "rdfs:Class",
