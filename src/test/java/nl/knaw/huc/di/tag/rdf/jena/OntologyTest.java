@@ -1,7 +1,6 @@
 package nl.knaw.huc.di.tag.rdf.jena;
 
 import org.apache.jena.ext.xerces.util.URI;
-import org.apache.jena.ontology.*;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
@@ -9,11 +8,8 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
 public class OntologyTest {
+
   @Test
   public void testTAGOntology() throws URI.MalformedURIException {
     Model model = ModelFactory.createDefaultModel()
@@ -94,116 +90,6 @@ public class OntologyTest {
 
   private void addLabel(final Model model, final Resource resource) {
     model.add(resource, RDFS.label, model.createLiteral(resource.getLocalName(), "en"));
-  }
-
-  @Test
-  public void testTAGMLOntology() throws FileNotFoundException {
-    String namespace = "https://brambg.github.io/tag-rdf/tagml.rdf#";
-    OntModel model = ModelFactory.createOntologyModel(OntModelSpec.RDFS_MEM);
-    model.setNsPrefix("tag", namespace);
-
-
-    OntClass document = model.createClass(namespace + "Document");
-    addLabel(document, "Document");
-    document.addSuperClass(RDFS.Resource);
-
-    OntClass markupNode = model.createClass(namespace + "MarkupNode");
-    addLabel(markupNode, "MarkupNode");
-    markupNode.addSuperClass(RDFS.Resource);
-
-    OntClass textNode = model.createClass(namespace + "TextNode");
-    addLabel(textNode, "TextNode");
-    textNode.addSuperClass(RDFS.Resource);
-
-    OntClass annotationNode = model.createClass(namespace + "AnnotationNode");
-    addLabel(annotationNode, "AnnotationNode");
-    annotationNode.addSuperClass(RDFS.Resource);
-
-    OntClass layerNode = model.createClass(namespace + "LayerNode");
-    addLabel(layerNode, "LayerNode");
-    layerNode.addSuperClass(RDFS.Resource);
-
-    OntClass elementList = model.createClass(namespace + "ElementList");
-    addLabel(elementList, "ElementList");
-    elementList.addSuperClass(RDF.List);
-
-    OntClass nil = model.createClass(namespace + "nil");
-    nil.addSuperClass(elementList);
-
-    OntProperty first = model.createOntProperty(namespace + "first");
-    addLabel(first, "first");
-    first.addDomain(elementList);
-    first.addRange(markupNode);
-    first.addRange(textNode);
-
-    OntProperty rest = model.createOntProperty(namespace + "rest");
-    addLabel(rest, "rest");
-    rest.addDomain(elementList);
-    rest.addRange(elementList);
-
-    OntProperty root = model.createOntProperty(namespace + "root");
-    addLabel(root, "root");
-    root.addDomain(document);
-    root.addRange(markupNode);
-
-    OntProperty markupName = model.createOntProperty(namespace + "markup_name");
-    addLabel(markupName, "markup_name");
-    markupName.addDomain(markupNode);
-    markupName.addRange(RDFS.Literal);
-
-    OntProperty layer = model.createOntProperty(namespace + "layer");
-    addLabel(layer, "layer");
-    layer.addDomain(markupNode);
-    layer.addRange(layerNode);
-
-    OntProperty layerName = model.createOntProperty(namespace + "layer_name");
-    addLabel(layerName, "layer_name");
-    layerName.addDomain(layerNode);
-    layerName.addRange(RDFS.Literal);
-
-    OntProperty annotation = model.createOntProperty(namespace + "annotation");
-    addLabel(annotation, "annotation");
-    annotation.addDomain(markupNode);
-    annotation.addRange(annotationNode);
-
-    OntProperty elements = model.createOntProperty(namespace + "elements");
-    addLabel(elements, "elements");
-    elements.addDomain(markupNode);
-    elements.addRange(elementList);
-//    elements.addRange(markupNode);
-//    elements.addRange(textNode);
-
-    OntProperty annotationName = model.createOntProperty(namespace + "annotation_name");
-    addLabel(annotationName, "annotation_name");
-    annotationName.addDomain(annotationNode);
-    annotationName.addRange(RDFS.Literal);
-
-    OntProperty value = model.createOntProperty(namespace + "value");
-    addLabel(value, "value");
-    value.addDomain(annotationNode);
-    value.addRange(RDFS.Literal);
-    value.addRange(RDFS.Container);
-    value.addRange(document);
-
-    OntProperty content = model.createOntProperty(namespace + "content");
-    addLabel(content, "content");
-    content.addDomain(textNode);
-    content.addRange(RDFS.Literal);
-
-//    OntProperty next = model.createOntProperty(namespace + "next");
-//    addLabel(next, "next");
-//    next.addDomain(textNode);
-//    next.addRange(textNode);
-
-    System.out.println(DotFactory.fromModel(model));
-    model.write(System.out, "TURTLE");
-    model.write(new FileOutputStream(new File("out/tagml.rdf")));
-    model.write(new FileOutputStream(new File("out/tagml.jsonld")), "JSONLD");
-    model.write(new FileOutputStream(new File("out/tagml.ttl")), "TURTLE");
-  }
-
-  private void addLabel(final OntResource resource, final String label) {
-    resource.addLabel(label, "en");
   }
 
 }

@@ -6,7 +6,14 @@
       "@language" : "en",
       "@value" : "AnnotationNode"
     },
-    "subClassOf" : "rdfs:Resource"
+    "subClassOf" : [ "tag:AnnotationNode", "rdfs:Resource" ]
+  }, {
+    "@id" : "tag:BooleanAnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "BooleanAnnotationNode"
+    }
   }, {
     "@id" : "tag:Document",
     "@type" : "rdfs:Class",
@@ -32,13 +39,54 @@
     },
     "subClassOf" : "rdfs:Resource"
   }, {
+    "@id" : "tag:ListAnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "ListAnnotationNode"
+    }
+  }, {
+    "@id" : "tag:MapAnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "MapAnnotationNode"
+    }
+  }, {
     "@id" : "tag:MarkupNode",
     "@type" : "rdfs:Class",
     "label" : {
       "@language" : "en",
       "@value" : "MarkupNode"
-    },
-    "subClassOf" : "rdfs:Resource"
+    }
+  }, {
+    "@id" : "tag:NumberAnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "NumberAnnotationNode"
+    }
+  }, {
+    "@id" : "tag:ReferenceAnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "ReferenceAnnotationNode"
+    }
+  }, {
+    "@id" : "tag:RichTextAnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "RichTextAnnotationNode"
+    }
+  }, {
+    "@id" : "tag:StringAnnotationNode",
+    "@type" : "rdfs:Class",
+    "label" : {
+      "@language" : "en",
+      "@value" : "StringAnnotationNode"
+    }
   }, {
     "@id" : "tag:TextNode",
     "@type" : "rdfs:Class",
@@ -171,6 +219,6 @@
     "rdf" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "xsd" : "http://www.w3.org/2001/XMLSchema#",
     "rdfs" : "http://www.w3.org/2000/01/rdf-schema#",
-    "tag" : "https://brambg.github.io/tag-rdf/tagml.rdf#"
+    "tag" : "https://brambg.github.io/tag-rdf/tagml.ttl#"
   }
 }

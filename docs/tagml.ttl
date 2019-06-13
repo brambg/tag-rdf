@@ -2,86 +2,113 @@
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix tag:   <https://brambg.github.io/tag-rdf/tagml.rdf#> .
-
-tag:layer_name  a    rdf:Property ;
-        rdfs:domain  tag:LayerNode ;
-        rdfs:label   "layer_name"@en ;
-        rdfs:range   rdfs:Literal .
-
-tag:ElementList  a       rdfs:Class ;
-        rdfs:label       "ElementList"@en ;
-        rdfs:subClassOf  rdf:List .
-
-tag:first  a         rdf:Property ;
-        rdfs:domain  tag:ElementList ;
-        rdfs:label   "first"@en ;
-        rdfs:range   tag:TextNode , tag:MarkupNode .
-
-tag:annotation_name  a  rdf:Property ;
-        rdfs:domain  tag:AnnotationNode ;
-        rdfs:label   "annotation_name"@en ;
-        rdfs:range   rdfs:Literal .
-
-tag:nil  a               rdfs:Class ;
-        rdfs:subClassOf  tag:ElementList .
-
-tag:annotation  a    rdf:Property ;
-        rdfs:domain  tag:MarkupNode ;
-        rdfs:label   "annotation"@en ;
-        rdfs:range   tag:AnnotationNode .
-
-tag:Document  a          rdfs:Class ;
-        rdfs:label       "Document"@en ;
-        rdfs:subClassOf  rdfs:Resource .
-
-tag:MarkupNode  a        rdfs:Class ;
-        rdfs:label       "MarkupNode"@en ;
-        rdfs:subClassOf  rdfs:Resource .
-
-tag:markup_name  a   rdf:Property ;
-        rdfs:domain  tag:MarkupNode ;
-        rdfs:label   "markup_name"@en ;
-        rdfs:range   rdfs:Literal .
-
-tag:LayerNode  a         rdfs:Class ;
-        rdfs:label       "LayerNode"@en ;
-        rdfs:subClassOf  rdfs:Resource .
-
-tag:value  a         rdf:Property ;
-        rdfs:domain  tag:AnnotationNode ;
-        rdfs:label   "value"@en ;
-        rdfs:range   tag:Document , rdfs:Container , rdfs:Literal .
+@prefix tag:   <https://brambg.github.io/tag-rdf/tagml.ttl#> .
 
 tag:elements  a      rdf:Property ;
         rdfs:domain  tag:MarkupNode ;
         rdfs:label   "elements"@en ;
         rdfs:range   tag:ElementList .
 
+tag:Document  a          rdfs:Class ;
+        rdfs:label       "Document"@en ;
+        rdfs:subClassOf  rdfs:Resource .
+
+tag:first  a         rdf:Property ;
+        rdfs:domain  tag:ElementList ;
+        rdfs:label   "first"@en ;
+        rdfs:range   tag:TextNode , tag:MarkupNode .
+
+tag:TextNode  a          rdfs:Class ;
+        rdfs:label       "TextNode"@en ;
+        rdfs:subClassOf  rdfs:Resource .
+
+tag:MarkupNode  a   rdfs:Class ;
+        rdfs:label  "MarkupNode"@en .
+
+tag:RichTextAnnotationNode
+        a           rdfs:Class ;
+        rdfs:label  "RichTextAnnotationNode"@en .
+
+tag:ListAnnotationNode
+        a           rdfs:Class ;
+        rdfs:label  "ListAnnotationNode"@en .
+
+tag:StringAnnotationNode
+        a           rdfs:Class ;
+        rdfs:label  "StringAnnotationNode"@en .
+
 tag:content  a       rdf:Property ;
         rdfs:domain  tag:TextNode ;
         rdfs:label   "content"@en ;
         rdfs:range   rdfs:Literal .
+
+tag:annotation  a    rdf:Property ;
+        rdfs:domain  tag:MarkupNode ;
+        rdfs:label   "annotation"@en ;
+        rdfs:range   tag:AnnotationNode .
+
+tag:value  a         rdf:Property ;
+        rdfs:domain  tag:AnnotationNode ;
+        rdfs:label   "value"@en ;
+        rdfs:range   tag:Document , rdfs:Container , rdfs:Literal .
+
+tag:ElementList  a       rdfs:Class ;
+        rdfs:label       "ElementList"@en ;
+        rdfs:subClassOf  rdf:List .
+
+tag:annotation_name  a  rdf:Property ;
+        rdfs:domain  tag:AnnotationNode ;
+        rdfs:label   "annotation_name"@en ;
+        rdfs:range   rdfs:Literal .
+
+tag:ReferenceAnnotationNode
+        a           rdfs:Class ;
+        rdfs:label  "ReferenceAnnotationNode"@en .
 
 tag:layer  a         rdf:Property ;
         rdfs:domain  tag:MarkupNode ;
         rdfs:label   "layer"@en ;
         rdfs:range   tag:LayerNode .
 
+tag:AnnotationNode  a    rdfs:Class ;
+        rdfs:label       "AnnotationNode"@en ;
+        rdfs:subClassOf  tag:AnnotationNode , rdfs:Resource .
+
+tag:nil  a               rdfs:Class ;
+        rdfs:subClassOf  tag:ElementList .
+
+tag:BooleanAnnotationNode
+        a           rdfs:Class ;
+        rdfs:label  "BooleanAnnotationNode"@en .
+
+tag:layer_name  a    rdf:Property ;
+        rdfs:domain  tag:LayerNode ;
+        rdfs:label   "layer_name"@en ;
+        rdfs:range   rdfs:Literal .
+
+tag:LayerNode  a         rdfs:Class ;
+        rdfs:label       "LayerNode"@en ;
+        rdfs:subClassOf  rdfs:Resource .
+
+tag:NumberAnnotationNode
+        a           rdfs:Class ;
+        rdfs:label  "NumberAnnotationNode"@en .
+
 tag:rest  a          rdf:Property ;
         rdfs:domain  tag:ElementList ;
         rdfs:label   "rest"@en ;
         rdfs:range   tag:ElementList .
 
+tag:markup_name  a   rdf:Property ;
+        rdfs:domain  tag:MarkupNode ;
+        rdfs:label   "markup_name"@en ;
+        rdfs:range   rdfs:Literal .
+
+tag:MapAnnotationNode
+        a           rdfs:Class ;
+        rdfs:label  "MapAnnotationNode"@en .
+
 tag:root  a          rdf:Property ;
         rdfs:domain  tag:Document ;
         rdfs:label   "root"@en ;
         rdfs:range   tag:MarkupNode .
-
-tag:AnnotationNode  a    rdfs:Class ;
-        rdfs:label       "AnnotationNode"@en ;
-        rdfs:subClassOf  rdfs:Resource .
-
-tag:TextNode  a          rdfs:Class ;
-        rdfs:label       "TextNode"@en ;
-        rdfs:subClassOf  rdfs:Resource .
