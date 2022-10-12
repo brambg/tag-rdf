@@ -215,7 +215,7 @@ public class KnowledgeBaseTest {
     System.out.println();
   }
 
-  @Test
+//  @Test
   public void testBigXML() throws IOException {
     String xml = FileUtils.readFileToString(new File("data/deys001hgmp09_01.xml"), Charset.defaultCharset());
     KnowledgeBase kb = KnowledgeBaseFactory.fromXML(xml);
