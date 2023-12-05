@@ -22,7 +22,7 @@
 
         <assertj.version>3.9.1</assertj.version>
         <junit.version>4.13.1</junit.version>
-        <logback-classic.version>1.2.3</logback-classic.version>
+        <logback-classic.version>1.2.13</logback-classic.version>
         <mockito.version>2.16.0</mockito.version>
         <wagon-ssh.version>2.7</wagon-ssh.version>
         <jena.version>4.2.0</jena.version>
